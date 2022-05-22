@@ -1,5 +1,5 @@
 
-namespace FakeFileCreate;
+namespace ThreadedFakeCreate;
 
 public class ThreadedDataGenerator
 {
