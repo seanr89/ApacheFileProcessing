@@ -1,6 +1,6 @@
 using Bogus;
 
-namespace ThreadedFakeCreate;
+namespace CrossCutters;
 
 public static class BogusTransactionGenerator
 {

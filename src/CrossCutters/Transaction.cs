@@ -1,5 +1,5 @@
 
-namespace FakeFileCreate.Model;
+namespace CrossCutters;
 
 public record Transaction
 {

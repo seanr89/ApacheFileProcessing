@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using CrossCutters;
 
 namespace ThreadedFakeCreate;
 
@@ -20,23 +21,23 @@ public class Program
         int split = 4;
         int count = recordCount / split;
 
-        //TODO: figure out a way to split this up!
-        //Simple 4 way split now!
-        for(int i = 0; i < 4; ++i)
+        RunThreadPool(split, count);
+    }
+
+    static void RunThreadPool(int split, int count)
+    {
+        var doneEvents = new ManualResetEvent[split];
+
+        for (int i = 0; i < split; i++)
         {
-            Console.WriteLine($"Iteration: {i}");
-            ThreadPool.QueueUserWorkItem(Job);
-            Thread.Sleep(200);
+            //set the done event, initialise the processor and work!
+            doneEvents[i] = new ManualResetEvent(false);
+            var f = new ThreadedDataGenerator(count, i, doneEvents[i]);
+            ThreadPool.QueueUserWorkItem(new WaitCallback(f.ThreadPoolCallback), i);
         }
 
-        static void Job(object state){
-            for (int x = 0; x < 2500; x++)
-            {
-                // Console.WriteLine("cycle {0}, is processing by thread {1}",
-                // i, Thread.CurrentThread.ManagedThreadId);
-                // Thread.Sleep(350);
-                //listData.Add(BogusTransactionGenerator.GenerateTransaction());
-            }
-        }
+        //WaitHandler to block until all the work is done
+        WaitHandle.WaitAll();
+        //return "Job Done";
     }
 }
