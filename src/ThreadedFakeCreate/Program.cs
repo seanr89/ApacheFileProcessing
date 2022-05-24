@@ -21,10 +21,10 @@ public class Program
         int split = 4;
         int count = recordCount / split;
 
-        RunThreadPool(split, count);
+        await RunThreadPool(split, count);
     }
 
-    static void RunThreadPool(int split, int count)
+    static async Task RunThreadPool(int split, int count)
     {
         var doneEvents = new ManualResetEvent[split];
 
