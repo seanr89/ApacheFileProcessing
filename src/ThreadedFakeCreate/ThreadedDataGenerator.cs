@@ -7,7 +7,8 @@ public class ThreadedDataGenerator
     public List<Transaction> _transactions { get; set; }
     private ManualResetEvent _doneEvent;
     private readonly int _count;
-    private readonly int _threadNumber;
+    public readonly int _threadNumber;
+    private int splitCount = 100;
     public ThreadedDataGenerator(int count, int threadNumber, ManualResetEvent doneEvent)
     {
         _transactions = new List<Transaction>();
@@ -20,19 +21,17 @@ public class ThreadedDataGenerator
     /// ThreadPool queue event to be executed
     /// </summary>
     /// <param name="threadContext">Incoming threadContext and its parameters</param>
-    public async void ThreadPoolCallback(Object threadContext)
-    {
-        //Request that the processor is executed and update the doneEvent once complete
-        this.Execute();
-        Console.WriteLine("Thread {0} complete", _threadNumber);
-        _doneEvent.Set();
-    }
+    // public async void ThreadPoolCallback(Object threadContext)
+    // {
+    //     //Request that the processor is executed and update the doneEvent once complete
+    //     this.Execute();
+    //     Console.WriteLine("Thread {0} complete", _threadNumber);
+    //     _doneEvent.Set();
+    // }
 
     public void CustomEvent()
     {
-        Console.WriteLine("CustomEvent");
         this.Execute();
-        //Console.WriteLine("Thread {0} complete", _threadNumber);
     }
 
     /// <summary>
@@ -41,11 +40,13 @@ public class ThreadedDataGenerator
     /// </summary>
     private void Execute()
     {
-        Console.WriteLine("Execute - Thread {0} started", _threadNumber);
+        //Console.WriteLine("Execute - Thread {0} started", _threadNumber);
 
-        for(int i = 0; i < _count; i++)
+        var loopSplit = _count / splitCount;
+
+        for(int i = 0; i < splitCount; ++i)
         {
-            _transactions.Add(BogusTransactionGenerator.GenerateTransaction());
+            _transactions.AddRange(BogusTransactionGenerator.GenerateTransactions(loopSplit));
         }
     }
 }
