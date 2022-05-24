@@ -27,17 +27,25 @@ public class Program
     static async Task RunThreadPool(int split, int count)
     {
         var doneEvents = new ManualResetEvent[split];
+        var threadArray = new ThreadedDataGenerator[split];
 
         for (int i = 0; i < split; i++)
         {
             //set the done event, initialise the processor and work!
             doneEvents[i] = new ManualResetEvent(false);
             var f = new ThreadedDataGenerator(count, i, doneEvents[i]);
-            ThreadPool.QueueUserWorkItem(new WaitCallback(f.ThreadPoolCallback), i);
+            threadArray[i] = f;
+            ThreadPool.QueueUserWorkItem(x => {
+                f.CustomEvent();
+                Console.WriteLine("Job Done Now!");
+            }, i);
         }
+        //https://stackoverflow.com/questions/9930007/how-to-call-a-completion-method-everytime-threadpool-queueuserworkitem-method-is
+        //https://docs.microsoft.com/en-us/dotnet/api/system.threading.threadpool.queueuserworkitem?view=net-6.0
+
 
         //WaitHandler to block until all the work is done
-        WaitHandle.WaitAll();
+        WaitHandle.WaitAll(doneEvents);
         //return "Job Done";
     }
 }

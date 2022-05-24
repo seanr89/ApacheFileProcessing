@@ -28,6 +28,13 @@ public class ThreadedDataGenerator
         _doneEvent.Set();
     }
 
+    public void CustomEvent()
+    {
+        Console.WriteLine("CustomEvent");
+        this.Execute();
+        //Console.WriteLine("Thread {0} complete", _threadNumber);
+    }
+
     /// <summary>
     /// Method to handle the process execution events!
     /// i.e. provide a delay and read through the list of email records
