@@ -7,37 +7,36 @@ namespace CrossCutters;
 
 public static class FileWriter
 {
-    static string filepath = "./Output/fakefile.csv";
+    static string filepath = "./Output/";
     /// <summary>
-    /// 
+    /// PUBLIC: file ready to support plan to write a new file or append to an existing file
     /// </summary>
     /// <param name="records"></param>
-    /// <param name="newRun"></param>
-    public static void WriteFakeTransactionToFile(List<Transaction> records, bool newRun = false)
+    /// <param name="date"></param>
+    public static void WriteFakeTransactionToFile(List<Transaction> records, DateOnly date)
     {
-        Console.WriteLine("WriteFakeTransactionToFile");
-        if(doesFileExist(newRun))
+        //Console.WriteLine("WriteFakeTransactionToFile");
+        if(doesFileExist(date))
         {
-            AppendToFile(records);
+            AppendToFile(records, date);
             return;
         }
-        WriteNewFile(records);
+        WriteNewFile(records, date);
     }
 
     /// <summary>
-    /// 
+    /// Create a new file and write to it!
     /// </summary>
     /// <param name="records"></param>
-    static void WriteNewFile(List<Transaction> records)
+    static void WriteNewFile(List<Transaction> records, DateOnly date)
     {
-        Console.WriteLine("WriteNewFile");
-        using (var streamWriter = new StreamWriter("./Output/fakefile.csv"))
+        //Console.WriteLine("WriteNewFile");
+        using (var streamWriter = new StreamWriter(getFilePath(date)))
         {
             using (var csvWriter = new CsvWriter(streamWriter, CultureInfo.InvariantCulture))
             {
                 csvWriter.WriteRecords(records);
                 streamWriter.Flush();
-                //result = memoryStream.ToArray();
             }
         }
     }
@@ -46,15 +45,15 @@ public static class FileWriter
     /// 
     /// </summary>
     /// <param name="records"></param>
-    static void AppendToFile(List<Transaction> records)
+    static void AppendToFile(List<Transaction> records, DateOnly date)
     {
-        Console.WriteLine("AppendToFile");
+        //Console.WriteLine("AppendToFile");
         var config = new CsvConfiguration(CultureInfo.InvariantCulture)
         {
             // Don't write the header again.
             HasHeaderRecord = false,
         };
-        using (var stream = File.Open("./Output/fakefile.csv", FileMode.Append))
+        using (var stream = File.Open(getFilePath(date), FileMode.Append))
         using (var writer = new StreamWriter(stream))
         using (var csv = new CsvWriter(writer, config))
         {
@@ -62,9 +61,14 @@ public static class FileWriter
         }
     }
 
-    static bool doesFileExist(bool newRun = false)
+    static bool doesFileExist(DateOnly date)
     {
-        if(newRun) return false;
-        return File.Exists(filepath) ? true : false;
+        //if(newRun) return false;
+        return File.Exists(getFilePath(date)) ? true : false;
+    }
+
+    static string getFilePath(DateOnly date)
+    {
+        return string.Format(@"./Output/Trans_{0:ddMMMyyyy}.csv", date);
     }
 }

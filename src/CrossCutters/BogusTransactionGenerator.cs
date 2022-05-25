@@ -5,14 +5,13 @@ namespace CrossCutters;
 public static class BogusTransactionGenerator
 {
     /// <summary>
-    /// 
+    /// Generate a single fake transaction
     /// </summary>
     /// <returns></returns>
     public static Transaction GenerateTransaction()
     {
         //Set the randomizer seed if you wish to generate repeatable data sets.
         var testTrans = new Faker<Transaction>()
-            //Use a method outside scope.
             .RuleFor(t => t.TransactionId, f => Guid.NewGuid())
             .RuleFor(t => t.CustomerId, f => Guid.NewGuid())
             .RuleFor(t => t.TransactionDate, f => f.Date.Past())
@@ -26,9 +25,9 @@ public static class BogusTransactionGenerator
     }
 
     /// <summary>
-    /// 
+    /// creates and returns an array of fake transactions
     /// </summary>
-    /// <param name="count"></param>
+    /// <param name="count">count of list items to be returned</param>
     /// <returns></returns>
     public static List<Transaction> GenerateTransactions(int count)
     {

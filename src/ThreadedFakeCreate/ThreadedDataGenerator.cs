@@ -18,17 +18,8 @@ public class ThreadedDataGenerator
     }
 
     /// <summary>
-    /// ThreadPool queue event to be executed
+    /// Custom event that needs to be executed!
     /// </summary>
-    /// <param name="threadContext">Incoming threadContext and its parameters</param>
-    // public async void ThreadPoolCallback(Object threadContext)
-    // {
-    //     //Request that the processor is executed and update the doneEvent once complete
-    //     this.Execute();
-    //     Console.WriteLine("Thread {0} complete", _threadNumber);
-    //     _doneEvent.Set();
-    // }
-
     public void CustomEvent()
     {
         this.Execute();
@@ -40,8 +31,6 @@ public class ThreadedDataGenerator
     /// </summary>
     private void Execute()
     {
-        //Console.WriteLine("Execute - Thread {0} started", _threadNumber);
-
         var loopSplit = _count / splitCount;
 
         for(int i = 0; i < splitCount; ++i)
