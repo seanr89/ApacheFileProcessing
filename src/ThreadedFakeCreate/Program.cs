@@ -9,7 +9,7 @@ public class Program
     private static int _totalCount = 0;
     async static Task Main(string[] args)
     {
-        int recordCount = 100000;
+        int recordCount = 10000;
         int counter = 1;
         var stopwatch = new Stopwatch();
         stopwatch.Start();
@@ -20,7 +20,7 @@ public class Program
             ScheduleRecurringJob(recordCount, date);
             counter++;
         }
-        while (counter < 25);
+        while (counter < 5);
       
         stopwatch.Stop();
         Console.WriteLine($"Event completed it : {stopwatch.ElapsedMilliseconds}ms");
