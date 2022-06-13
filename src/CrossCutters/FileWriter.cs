@@ -1,5 +1,6 @@
 
 using System.Globalization;
+using System.Runtime.InteropServices;
 using CsvHelper;
 using CsvHelper.Configuration;
 
@@ -7,7 +8,9 @@ namespace CrossCutters;
 
 public static class FileWriter
 {
-    static string filepath = "./Output/";
+    //static string filepath = "./Output/";
+    private static string windowsFolderPath = "C:/Users/Public/Downloads/ArchiveTrans";
+    private static string macFolderPath = "../../../../AppFiles";
     /// <summary>
     /// PUBLIC: file ready to support plan to write a new file or append to an existing file
     /// </summary>
@@ -30,8 +33,9 @@ public static class FileWriter
     /// <param name="records"></param>
     static void WriteNewFile(List<Transaction> records, DateOnly date)
     {
-        //Console.WriteLine("WriteNewFile");
-        using (var streamWriter = new StreamWriter(getFilePath(date)))
+        string path = getFilePath(date);
+        Console.WriteLine($"WriteNewFile: {path}");
+        using (var streamWriter = new StreamWriter(path))
         {
             using (var csvWriter = new CsvWriter(streamWriter, CultureInfo.InvariantCulture))
             {
@@ -63,12 +67,19 @@ public static class FileWriter
 
     static bool doesFileExist(DateOnly date)
     {
+        //Console.WriteLine("doesFileExist");
         //if(newRun) return false;
         return File.Exists(getFilePath(date)) ? true : false;
     }
 
     static string getFilePath(DateOnly date)
     {
-        return string.Format(@"./Output/Trans_{0:ddMMMyyyy}.csv", date);
+        if(System.Runtime.InteropServices.RuntimeInformation
+                                               .IsOSPlatform(OSPlatform.Windows))
+        {
+            return string.Format(@"{1}/Trans_{0:ddMMMyyyy}.csv", date, windowsFolderPath);
+        }
+        return string.Format(@"{1}/Trans_{0:ddMMMyyyy}.csv", date, macFolderPath);
+        //return string.Format(@"./Output/Trans_{0:ddMMMyyyy}.csv", date);
     }
 }

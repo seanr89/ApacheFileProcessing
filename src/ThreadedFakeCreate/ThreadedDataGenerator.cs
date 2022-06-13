@@ -9,12 +9,14 @@ public class ThreadedDataGenerator
     private readonly int _count;
     public readonly int _threadNumber;
     private int splitCount = 100;
-    public ThreadedDataGenerator(int count, int threadNumber, ManualResetEvent doneEvent)
+    private IEnumerable<Guid> _customerIds {get;set;}
+    public ThreadedDataGenerator(int count, int threadNumber, IEnumerable<Guid> customerIds, ManualResetEvent doneEvent)
     {
         _transactions = new List<Transaction>();
         _doneEvent = doneEvent;
         _count = count;
         _threadNumber = threadNumber;
+        _customerIds = customerIds;
     }
 
     /// <summary>
@@ -35,7 +37,7 @@ public class ThreadedDataGenerator
 
         for(int i = 0; i < splitCount; ++i)
         {
-            _transactions.AddRange(BogusTransactionGenerator.GenerateTransactions(loopSplit));
+            _transactions.AddRange(BogusTransactionGenerator.GenerateTransactions(loopSplit, _customerIds));
         }
     }
 }

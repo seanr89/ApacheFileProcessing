@@ -7,7 +7,7 @@ namespace MultFileSearch
             
         }
 
-        public void Execute(string path)
+        public void Execute(string path, bool isWindows)
         {
             if(Directory.Exists(path))
             {

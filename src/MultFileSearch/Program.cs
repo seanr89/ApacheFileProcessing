@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using System.Runtime.InteropServices;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -9,11 +10,17 @@ public class Program
     private static ServiceCollection _serviceCollection { get; set; }
     private static ServiceProvider _serviceProvider { get; set; }
 
-    private static string folderPath = "/Users/Public/Downloads/ArchiveTrans/";
+    private static string windowsFolderPath = "/Users/Public/Downloads/ArchiveTrans/";
+    private static string macFolderPath = "/Users/seanrafferty/Documents/AppFiles/";
+
     async static Task Main(string[] args)
     {
-        // See https://aka.ms/new-console-template for more information
         Console.WriteLine("File Searcher Started!");
+
+        bool isWindows = System.Runtime.InteropServices.RuntimeInformation
+                                               .IsOSPlatform(OSPlatform.Windows);
+        string folderPath = isWindows ? windowsFolderPath : macFolderPath;
+
 
         Configuration = LoadAppSettings();
 
@@ -22,8 +29,13 @@ public class Program
         //Initialise netcore dependency injection provider
         _serviceProvider = _serviceCollection.BuildServiceProvider();
 
+        Console.WriteLine("Please enter a customer ID");
+        string customerID = Console.ReadLine();
+        Console.WriteLine("Please end a MID");
+        string mid = Console.ReadLine();
+
         try{
-            _serviceProvider.GetService<FolderProcessor>().Execute(folderPath);//.Wait();
+            _serviceProvider.GetService<FolderProcessor>()?.Execute(folderPath, isWindows);//.Wait();
         }
         catch(Exception ex)
         {
