@@ -29,13 +29,14 @@ public static class BogusTransactionGenerator
     /// </summary>
     /// <param name="count">count of list items to be returned</param>
     /// <returns></returns>
-    public static List<Transaction> GenerateTransactions(int count, IEnumerable<Guid> customerIds)
+    public static List<Transaction> GenerateTransactions(int count, List<Customer> customers)
     {
+        //Console.WriteLine($"Customer: {customers.ElementAt(1).CustomerId}");
         Random rand = new Random();
         var testTrans = new Faker<Transaction>()
             //Use a method outside scope.
             .RuleFor(t => t.TransactionId, f => Guid.NewGuid())
-            .RuleFor(t => t.CustomerId, f => customerIds.ElementAt(rand.Next(0, customerIds.Count())))
+            .RuleFor(t => t.CustomerId, f => customers.ElementAt(rand.Next(0, customers.Count())).CustomerId)
             .RuleFor(t => t.TransactionDate, f => f.Date.Past())
             .RuleFor(t => t.MCC, f => f.Random.Number(4900,5600))
             .RuleFor(t => t.MerchantId, f => f.Random.Number(1,2999))

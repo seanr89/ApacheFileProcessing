@@ -3,11 +3,11 @@ namespace CrossCutters;
 
 public record Customer
 {
-    public Guid ExternalCustomerId { get; set; }
     public Guid CustomerId { get; set; }
+    public Guid ExternalCustomerId { get; set; }
 
-    // public override string ToString()
-    // {
-    //     return $"Transaction: {TransactionId} for MCC: {MCC} with Transaction Amount: {TransactionAmount}";
-    // }
+    public override string ToString()
+    {
+        return $"Customer: {CustomerId} for MCC: {ExternalCustomerId}";
+    }
 }

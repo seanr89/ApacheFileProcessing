@@ -2,6 +2,7 @@
 using System.Globalization;
 using CrossCutters;
 using CsvHelper;
+using CsvHelper.Configuration;
 
 namespace ThreadedFakeCreate;
 
@@ -17,36 +18,14 @@ public class Program
         stopwatch.Start();
 
         //TODO here create the customers! - needs a re-work!!!
-        List<Guid> customerIds = new List<Guid>();
-        if(File.Exists("./Output/customerIds.csv")){
-           using (var reader = new StreamReader("./Output/customerIds.csv"))
-            using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
-            {
-                customerIds = csv.GetRecords<Guid>().ToList();
-            }
-        }
-        else{
-            for(int i = 0; i < 100000; ++i)
-            {
-                customerIds.Add(new Guid());
-                using (var streamWriter = new StreamWriter("./Output/customerIds.csv"))
-                {
-                    using (var csvWriter = new CsvWriter(streamWriter, CultureInfo.InvariantCulture))
-                    {
-                        csvWriter.WriteRecords(customerIds);
-                        streamWriter.Flush();
-                    }
-                }
-            }
-        }
+        List<Customer> customers = CustomerHandler.TryGetCustomersOrGenerate().ToList();
 
-        Environment.Exit(0);
         //Maybe create some MID's too!
 
         do{
             var date = DateOnly.FromDateTime(DateTime.Now.AddDays(-counter));
             Console.WriteLine($"Faker Start to create: {recordCount} records for date: {date.ToShortDateString()}");
-            ScheduleRecurringJob(recordCount, date, customerIds);
+            ScheduleRecurringJob(recordCount, date, customers);
             counter++;
         }
         while (counter < 5); //Simple re-loop process
@@ -55,7 +34,7 @@ public class Program
         Console.WriteLine($"Event completed it : {stopwatch.ElapsedMilliseconds}ms");
     }
 
-    static void ScheduleRecurringJob(int recordCount, DateOnly date, IEnumerable<Guid> customerIds)
+    static void ScheduleRecurringJob(int recordCount, DateOnly date, IEnumerable<Customer> customers)
     {
         //Console.WriteLine($"ScheduleRecurringJob");
         int split = 4;
@@ -64,14 +43,14 @@ public class Program
         {
             //Clear the _record list back down after every pass to save memory!
             _records = new List<Transaction>();
-            RunThreadPool(split, count, customerIds);
+            RunThreadPool(split, count, customers);
             FileWriter.WriteFakeTransactionToFile(_records, date);
             _totalCount = _records.Count;
         }
         Console.WriteLine($"Created file with {_totalCount} records");
     }
 
-    static void RunThreadPool(int split, int count, IEnumerable<Guid> customerIds)
+    static void RunThreadPool(int split, int count, IEnumerable<Customer> customers)
     {
         //Console.WriteLine($"RunTheadPool on {count} and split: {split}");
         var doneEvents = new ManualResetEvent[split];
@@ -81,7 +60,7 @@ public class Program
         {
             //set the done event, initialise the processor and work!
             doneEvents[i] = new ManualResetEvent(false);
-            var f = new ThreadedDataGenerator(count, i, customerIds, doneEvents[i]);
+            var f = new ThreadedDataGenerator(count, i, customers, doneEvents[i]);
             threadArray[i] = f;
             ThreadPool.QueueUserWorkItem(x => {
                 f.CustomEvent();
