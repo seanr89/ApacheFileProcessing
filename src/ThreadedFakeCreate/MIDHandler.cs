@@ -17,26 +17,25 @@ public static class MIDHandler
     /// <returns></returns>
     public static List<MID> TryGetMIDsOrGenerate()
     {
-        throw new NotImplementedException();
-        // if(File.Exists("./Output/mids.csv")){
-        //     using (var reader = new StreamReader("./Output/mids.csv"))
-        //     // using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
-        //     // {
-        //     //     var records = csv.GetRecords<Customer>().ToList();
-        //     //     return records;
-        //     // }
-        // }
-        // else{
-            // var records = BogusCustomerGenerator.Generate();
-            // using (var streamWriter = new StreamWriter("./Output/mids.csv"))
-            // {
-            //     using (var csvWriter = new CsvWriter(streamWriter, CultureInfo.InvariantCulture))
-            //     {
-            //         csvWriter.WriteRecords(records);
-            //         streamWriter.Flush();
-            //     }
-            // }
-        //     return records;
-        // }
+        if(File.Exists("./Output/mids.csv")){
+            using (var reader = new StreamReader("./Output/mids.csv"))
+            using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
+            {
+                var records = csv.GetRecords<MID>().ToList();
+                return records;
+            }
+        }
+        else{
+            var records = BogusMIDGenerator.Generate();
+            using (var streamWriter = new StreamWriter("./Output/mids.csv"))
+            {
+                using (var csvWriter = new CsvWriter(streamWriter, CultureInfo.InvariantCulture))
+                {
+                    csvWriter.WriteRecords(records);
+                    streamWriter.Flush();
+                }
+            }
+            return records;
+        }
     }
 }

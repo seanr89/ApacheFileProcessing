@@ -12,7 +12,7 @@ public class Program
     private static int _totalCount = 0;
     async static Task Main(string[] args)
     {
-        int recordCount = 10000;
+        int recordCount = 35000;
         int counter = 1;
         var stopwatch = new Stopwatch();
         stopwatch.Start();
@@ -21,6 +21,7 @@ public class Program
         List<Customer> customers = CustomerHandler.TryGetCustomersOrGenerate().ToList();
 
         //Maybe create some MID's too!
+        List<MID> mids = MIDHandler.TryGetMIDsOrGenerate().ToList();
 
         //Looping here to handle multiple date ranges!
         do{
@@ -31,7 +32,7 @@ public class Program
             ScheduleRecurringJob(recordCount, date, customers);
             counter++;
         }
-        while (counter <= 5); //Simple re-loop process
+        while (counter <= 21); //Simple re-loop process
       
         stopwatch.Stop();
         Console.WriteLine($"Event completed it : {stopwatch.ElapsedMilliseconds}ms");

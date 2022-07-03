@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Diagnostics;
+using System.Runtime.InteropServices;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -34,6 +35,9 @@ public class Program
         Console.WriteLine("Please end a MID");
         string mid = Console.ReadLine() ?? "123";
 
+        var stopwatch = new Stopwatch();
+        stopwatch.Start();
+
         try{
             _serviceProvider.GetService<FolderProcessor>()?.Execute(folderPath, isWindows, customerID);//.Wait();
         }
@@ -41,6 +45,9 @@ public class Program
         {
             Console.WriteLine(ex.Message);
         }
+
+        stopwatch.Stop();
+        Console.WriteLine($"Event completed it : {stopwatch.ElapsedMilliseconds}ms");
 
         Console.ReadLine();
         Console.WriteLine("File Search Completed!");
