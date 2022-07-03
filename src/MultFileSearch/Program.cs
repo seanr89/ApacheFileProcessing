@@ -30,12 +30,12 @@ public class Program
         _serviceProvider = _serviceCollection.BuildServiceProvider();
 
         Console.WriteLine("Please enter a customer ID");
-        string customerID = Console.ReadLine();
+        string customerID = Console.ReadLine() ?? "27fe7bf7-635f-4067-a68d-dfbca9006ffe";
         Console.WriteLine("Please end a MID");
-        string mid = Console.ReadLine();
+        string mid = Console.ReadLine() ?? "123";
 
         try{
-            _serviceProvider.GetService<FolderProcessor>()?.Execute(folderPath, isWindows);//.Wait();
+            _serviceProvider.GetService<FolderProcessor>()?.Execute(folderPath, isWindows, customerID);//.Wait();
         }
         catch(Exception ex)
         {

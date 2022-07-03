@@ -15,17 +15,18 @@ public static class MIDHandler
     /// Search for existing customer list and return array or create an upload new list
     /// </summary>
     /// <returns></returns>
-    public static List<Customer> TryGetMIDsOrGenerate()
+    public static List<MID> TryGetMIDsOrGenerate()
     {
-        if(File.Exists("./Output/mids.csv")){
-            using (var reader = new StreamReader("./Output/mids.csv"))
-            // using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
-            // {
-            //     var records = csv.GetRecords<Customer>().ToList();
-            //     return records;
-            // }
-        }
-        else{
+        throw new NotImplementedException();
+        // if(File.Exists("./Output/mids.csv")){
+        //     using (var reader = new StreamReader("./Output/mids.csv"))
+        //     // using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
+        //     // {
+        //     //     var records = csv.GetRecords<Customer>().ToList();
+        //     //     return records;
+        //     // }
+        // }
+        // else{
             // var records = BogusCustomerGenerator.Generate();
             // using (var streamWriter = new StreamWriter("./Output/mids.csv"))
             // {
@@ -35,7 +36,7 @@ public static class MIDHandler
             //         streamWriter.Flush();
             //     }
             // }
-            return records;
-        }
+        //     return records;
+        // }
     }
 }
