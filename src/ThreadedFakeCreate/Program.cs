@@ -12,7 +12,7 @@ public class Program
     private static int _totalCount = 0;
     async static Task Main(string[] args)
     {
-        int recordCount = 1000;
+        int recordCount = 10000;
         int counter = 1;
         var stopwatch = new Stopwatch();
         stopwatch.Start();
@@ -22,30 +22,41 @@ public class Program
 
         //Maybe create some MID's too!
 
+        //Looping here to handle multiple date ranges!
         do{
+            _totalCount = 0;
             var date = DateOnly.FromDateTime(DateTime.Now.AddDays(-counter));
-            Console.WriteLine($"Faker Start to create: {recordCount} records for date: {date.ToShortDateString()}");
+            // Console.WriteLine($"Faker Start to create: {recordCount} records for date: {date.ToShortDateString()}");
+            Console.WriteLine($"Faker Start to create records for date: {date.ToShortDateString()}");
             ScheduleRecurringJob(recordCount, date, customers);
             counter++;
         }
-        while (counter < 5); //Simple re-loop process
+        while (counter <= 5); //Simple re-loop process
       
         stopwatch.Stop();
         Console.WriteLine($"Event completed it : {stopwatch.ElapsedMilliseconds}ms");
     }
 
+    /// <summary>
+    /// TODO: Detail Notes
+    /// </summary>
+    /// <param name="recordCount"></param>
+    /// <param name="date"></param>
+    /// <param name="customers"></param>
     static void ScheduleRecurringJob(int recordCount, DateOnly date, IEnumerable<Customer> customers)
     {
-        //Console.WriteLine($"ScheduleRecurringJob");
+        Console.WriteLine($"ScheduleRecurringJob");
         int split = 4;
         int count = recordCount / split;
+        Console.WriteLine($"Count = {count}");
+        //What is this loop for??
         for(int x = 0; x < 10; ++x)
         {
             //Clear the _record list back down after every pass to save memory!
             _records = new List<Transaction>();
             RunThreadPool(split, count, customers);
             FileWriter.WriteFakeTransactionToFile(_records, date);
-            _totalCount = _records.Count;
+            _totalCount += _records.Count;
         }
         Console.WriteLine($"Created file with {_totalCount} records");
     }

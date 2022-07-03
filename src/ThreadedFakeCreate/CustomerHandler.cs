@@ -6,8 +6,15 @@ using CsvHelper;
 
 namespace ThreadedFakeCreate;
 
+/// <summary>
+/// Simple step to go and create an array of example customers!
+/// </summary>
 public static class CustomerHandler
 {
+    /// <summary>
+    /// Search for existing customer list and return array or create an upload new list
+    /// </summary>
+    /// <returns></returns>
     public static List<Customer> TryGetCustomersOrGenerate()
     {
         if(File.Exists("./Output/customers.csv")){

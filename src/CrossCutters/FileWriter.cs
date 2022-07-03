@@ -18,7 +18,6 @@ public static class FileWriter
     /// <param name="date"></param>
     public static void WriteFakeTransactionToFile(List<Transaction> records, DateOnly date)
     {
-        //Console.WriteLine("WriteFakeTransactionToFile");
         if(doesFileExist(date))
         {
             AppendToFile(records, date);
@@ -65,6 +64,11 @@ public static class FileWriter
         }
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="date"></param>
+    /// <returns></returns>
     static bool doesFileExist(DateOnly date)
     {
         //Console.WriteLine("doesFileExist");
@@ -72,6 +76,11 @@ public static class FileWriter
         return File.Exists(getFilePath(date)) ? true : false;
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="date"></param>
+    /// <returns></returns>
     static string getFilePath(DateOnly date)
     {
         if(System.Runtime.InteropServices.RuntimeInformation

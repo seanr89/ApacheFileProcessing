@@ -8,7 +8,7 @@ public class ThreadedDataGenerator
     private ManualResetEvent _doneEvent;
     private readonly int _count;
     public readonly int _threadNumber;
-    private int splitCount = 100;
+    private int splitCount = 10;
     private List<Customer> _customers {get;set;}
     public ThreadedDataGenerator(int count, int threadNumber, IEnumerable<Customer> customers, ManualResetEvent doneEvent)
     {
@@ -34,8 +34,8 @@ public class ThreadedDataGenerator
     private void Execute()
     {
         var loopSplit = _count / splitCount;
-
-        for(int i = 0; i < splitCount; ++i)
+        //Not sure if this loop is required
+        for(int i = 0; i <= splitCount; ++i)
         {
             _transactions.AddRange(BogusTransactionGenerator.GenerateTransactions(loopSplit, _customers));
         }
