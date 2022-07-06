@@ -11,7 +11,6 @@ public static class BogusTransactionGenerator
     /// <returns></returns>
     public static List<Transaction> GenerateTransactions(int count, List<Customer> customers)
     {
-        //Console.WriteLine($"Customer: {customers.ElementAt(1).CustomerId}");
         Random rand = new Random();
         var testTrans = new Faker<Transaction>()
             //Use a method outside scope.

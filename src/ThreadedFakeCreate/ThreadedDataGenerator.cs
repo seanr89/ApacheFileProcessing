@@ -33,11 +33,12 @@ public class ThreadedDataGenerator
     /// </summary>
     private void Execute()
     {
-        var loopSplit = _count / splitCount;
+        _transactions.AddRange(BogusTransactionGenerator.GenerateTransactions(_count, _customers));
+        //var loopSplit = _count / splitCount;
         //Not sure if this loop is required
-        for(int i = 0; i <= splitCount; ++i)
-        {
-            _transactions.AddRange(BogusTransactionGenerator.GenerateTransactions(loopSplit, _customers));
-        }
+        //for(int i = 0; i <= splitCount; ++i)
+        //{
+        //    _transactions.AddRange(BogusTransactionGenerator.GenerateTransactions(loopSplit, _customers));
+        //}
     }
 }

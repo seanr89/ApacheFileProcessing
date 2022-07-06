@@ -12,24 +12,26 @@ public class Program
     private static int _totalCount = 0;
     async static Task Main(string[] args)
     {
-        int recordCount = 35000;
+        int iterationCount = 35000;
         int counter = 1;
         var stopwatch = new Stopwatch();
         stopwatch.Start();
 
         //TODO here create the customers! - needs a re-work!!!
         List<Customer> customers = CustomerHandler.TryGetCustomersOrGenerate().ToList();
+        Console.WriteLine($"Using {customers.Count} customers");
 
         //Maybe create some MID's too!
         List<MID> mids = MIDHandler.TryGetMIDsOrGenerate().ToList();
+        Console.WriteLine($"Using {mids.Count} MIDs");
 
         //Looping here to handle multiple date ranges!
         do{
             _totalCount = 0;
             var date = DateOnly.FromDateTime(DateTime.Now.AddDays(-counter));
-            // Console.WriteLine($"Faker Start to create: {recordCount} records for date: {date.ToShortDateString()}");
+            // Console.WriteLine($"Faker Start to create: {iterationCount} records for date: {date.ToShortDateString()}");
             Console.WriteLine($"Faker Start to create records for date: {date.ToShortDateString()}");
-            ScheduleRecurringJob(recordCount, date, customers);
+            ScheduleRecurringJob(iterationCount, date, customers);
             counter++;
         }
         while (counter <= 21); //Simple re-loop process
@@ -49,8 +51,9 @@ public class Program
         Console.WriteLine($"ScheduleRecurringJob");
         int split = 4;
         int count = recordCount / split;
-        Console.WriteLine($"Count = {count}");
-        //What is this loop for??
+        //Dont know if I like this tbh!!
+        //This is used to chunk across writing a single daily file!
+        //each then runs across the 4 part thread pool
         for(int x = 0; x < 10; ++x)
         {
             //Clear the _record list back down after every pass to save memory!
