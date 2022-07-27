@@ -14,9 +14,8 @@ public class Program
     {
         int iterationCount = 50000;
         int counter = 1;
-        int maxFileCount = 2;
+        int maxFileCount = 15;
         var stopwatch = new Stopwatch();
-        
 
         //TODO here create the customers! - needs a re-work!!!
         List<Customer> customers = CustomerHandler.TryGetCustomersOrGenerate().ToList();
@@ -26,6 +25,16 @@ public class Program
         List<MID> mids = MIDHandler.TryGetMIDsOrGenerate().ToList();
         Console.WriteLine($"Using {mids.Count} MIDs");
 
+        Console.WriteLine("How many days back do you want to start!");
+        int dayCountBack = Convert.ToInt32(Console.ReadLine());
+
+        var startDate = DateTime.Now.AddDays(-dayCountBack);
+        Console.WriteLine($"Date: {startDate.ToShortDateString()}");
+
+        //Environment.Exit(0);
+        //15,30
+        
+
         //TODO: ask question to wipe the files down
         if(Confirm("Do you want to wipe down the existing files"))
             FileWriter.DeleteFiles();
@@ -33,13 +42,14 @@ public class Program
         stopwatch.Start();
 
         //Looping here to handle multiple date ranges!
-        Console.Write($"{maxFileCount} files to generate");
+        Console.Write($"{maxFileCount} files to generate!/n");
         do{
             _totalCount = 0;
-            var date = DateOnly.FromDateTime(DateTime.Now.AddDays(-counter));
+            var date = DateOnly.FromDateTime(startDate.AddDays(-counter));
             // Console.WriteLine($"Faker Start to create: {iterationCount} records for date: {date.ToShortDateString()}");
             Console.WriteLine($"Faker Start to create records for date: {date.ToShortDateString()}");
             ScheduleRecurringJob(iterationCount, date, customers, mids);
+            Console.WriteLine($"File Done at: {stopwatch.ElapsedMilliseconds}ms");
             counter++;
         }
         while (counter <= maxFileCount); //Simple re-loop process
@@ -58,7 +68,7 @@ public class Program
     /// <param name="mids"></param>
     static void ScheduleRecurringJob(int recordCount, DateOnly date, IEnumerable<Customer> customers, IEnumerable<MID> mids)
     {
-        Console.WriteLine($"ScheduleRecurringJob");
+        //Console.WriteLine($"ScheduleRecurringJob");
         int split = 25;
         int count = recordCount / split;
         //Dont know if I like this tbh!!

@@ -44,7 +44,7 @@ namespace MultFileSearch
                 using (var reader = new StreamReader(fileName))
                 using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
                 {
-                    var records = csv.GetRecords<Transaction>().Where(c => c.CustomerId.ToString() == customerId);
+                    var records = csv.GetRecords<Transaction>().Where(c => c.TOKENISED_CUSTOMER_ID.ToString() == customerId);
 
                     if(records.Any())
                         Console.WriteLine($"Found a total of {records.ToList().Count}");

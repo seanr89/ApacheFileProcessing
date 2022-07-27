@@ -1,4 +1,5 @@
 using Bogus;
+using CountryData.Bogus;
 
 namespace CrossCutters;
 
@@ -14,11 +15,14 @@ public static class BogusTransactionGenerator
         Random rand = new Random();
         var testTrans = new Faker<Transaction>()
             //Use a method outside scope.
-            .RuleFor(t => t.TransactionId, f => Guid.NewGuid())
-            .RuleFor(t => t.CustomerId, f => customers.ElementAt(rand.Next(0, customers.Count())).CustomerId)
-            .RuleFor(t => t.TransactionDate, f => f.Date.Past())
+            .RuleFor(t => t.TRANSASCTION_ID, f => Guid.NewGuid())
+            .RuleFor(t => t.TOKENISED_CUSTOMER_ID, f => customers.ElementAt(rand.Next(0, customers.Count())).CustomerId)
+            .RuleFor(t => t.TRANSCATION_DATE, f => f.Date.Past())
+            .RuleFor(t => t.TRANSACTION_NARRATIVE, f => f.Random.String())
+            .RuleFor(t => t.TRANSCATION_BILLING_AMOUNT, f => f.Finance.Amount(1, 150, 2))
+            .RuleFor(t => t.TRANSACTION_BILLING_CURRENCY_CODE, f => f.Country().CurrencyCode())
             .RuleFor(t => t.MCC, f => f.Random.Number(4900,5600))
-            .RuleFor(t => t.MerchantId, f => f.Random.Number(1,2999))
+            .RuleFor(t => t.MERCHANT_ID, f => f.Random.Number(1001,3999))
             .RuleFor(t => t.TransactionAmount, f => f.Finance.Amount(1, 150, 2))
             .RuleFor(t => t.TaxRate, f => f.Finance.Amount(0, 15, 0));
         return testTrans.Generate(count);
