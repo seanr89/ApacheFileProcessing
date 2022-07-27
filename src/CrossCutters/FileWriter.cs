@@ -10,7 +10,7 @@ public static class FileWriter
 {
     //static string filepath = "./Output/";
     private static string windowsFolderPath = "C:/Users/Public/Downloads/ArchiveTrans";
-    private static string macFolderPath = "../../../../AppFiles";
+    private static string macFolderPath = "./AppFiles";
     /// <summary>
     /// PUBLIC: file ready to support plan to write a new file or append to an existing file
     /// </summary>
@@ -26,6 +26,19 @@ public static class FileWriter
         WriteNewFile(records, date);
     }
 
+    public static void DeleteFiles()
+    {
+        //TODO
+        Console.WriteLine("Deleting Files");
+        var path = System.Runtime.InteropServices.RuntimeInformation
+                                               .IsOSPlatform(OSPlatform.Windows) ? windowsFolderPath: macFolderPath;
+        DirectoryInfo dir = new DirectoryInfo(path);
+        foreach(FileInfo fi in dir.GetFiles())
+        {
+            fi.Delete();
+        }
+    }
+
     /// <summary>
     /// Create a new file and write to it!
     /// </summary>
@@ -36,7 +49,8 @@ public static class FileWriter
         Console.WriteLine($"WriteNewFile: {path}");
         using (var streamWriter = new StreamWriter(path))
         {
-            using (var csvWriter = new CsvWriter(streamWriter, CultureInfo.InvariantCulture))
+            var csvConfig = new CsvConfiguration(CultureInfo.InvariantCulture) { HasHeaderRecord = true, Delimiter = "|" };
+            using (var csvWriter = new CsvWriter(streamWriter, csvConfig))
             {
                 csvWriter.WriteRecords(records);
                 streamWriter.Flush();
@@ -51,11 +65,7 @@ public static class FileWriter
     static void AppendToFile(List<Transaction> records, DateOnly date)
     {
         //Console.WriteLine("AppendToFile");
-        var config = new CsvConfiguration(CultureInfo.InvariantCulture)
-        {
-            // Don't write the header again.
-            HasHeaderRecord = false,
-        };
+        var config = new CsvConfiguration(CultureInfo.InvariantCulture) { HasHeaderRecord = true, Delimiter = "|" };
         using (var stream = File.Open(getFilePath(date), FileMode.Append))
         using (var writer = new StreamWriter(stream))
         using (var csv = new CsvWriter(writer, config))
@@ -72,7 +82,6 @@ public static class FileWriter
     static bool doesFileExist(DateOnly date)
     {
         //Console.WriteLine("doesFileExist");
-        //if(newRun) return false;
         return File.Exists(getFilePath(date)) ? true : false;
     }
 

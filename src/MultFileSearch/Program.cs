@@ -12,7 +12,7 @@ public class Program
     private static ServiceProvider _serviceProvider { get; set; }
 
     private static string windowsFolderPath = "/Users/Public/Downloads/ArchiveTrans/";
-    private static string macFolderPath = "/Users/seanrafferty/Documents/AppFiles/";
+    private static string macFolderPath = "../ThreadedFakeCreate/AppFiles/";
 
     async static Task Main(string[] args)
     {
