@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Runtime.InteropServices;
 using CsvHelper;
 using CsvHelper.Configuration;
+using CsvHelper.TypeConversion;
 
 namespace CrossCutters;
 
@@ -45,16 +46,26 @@ public static class FileWriter
     /// <param name="records"></param>
     static void WriteNewFile(List<Transaction> records, DateOnly date)
     {
-        string path = getFilePath(date);
-        Console.WriteLine($"WriteNewFile: {path}");
-        using (var streamWriter = new StreamWriter(path))
+        try
         {
-            var csvConfig = new CsvConfiguration(CultureInfo.InvariantCulture) { HasHeaderRecord = true, Delimiter = "|" };
-            using (var csvWriter = new CsvWriter(streamWriter, csvConfig))
+            string path = getFilePath(date);
+            Console.WriteLine($"WriteNewFile: {path}");
+            using (var streamWriter = new StreamWriter(path))
             {
-                csvWriter.WriteRecords(records);
-                streamWriter.Flush();
+                var csvConfig = new CsvConfiguration(CultureInfo.InvariantCulture) { HasHeaderRecord = true, Delimiter = "|" };
+                using (var csvWriter = new CsvWriter(streamWriter, csvConfig))
+                {
+                    var dateFormatOptions = new TypeConverterOptions { Formats = new[] { "yyyy-MM-dd HH:mm:ssz" } };
+                    csvWriter.Context.TypeConverterOptionsCache.AddOptions<DateTime>(dateFormatOptions);
+                    csvWriter.WriteRecords(records);
+                    streamWriter.Flush();
+                }
             }
+        }
+        catch (System.Exception e)
+        {
+            Console.WriteLine($"WriteNewFile: with exception {e.Message}");
+            throw;
         }
     }
 
@@ -70,6 +81,8 @@ public static class FileWriter
         using (var writer = new StreamWriter(stream))
         using (var csv = new CsvWriter(writer, config))
         {
+            var dateFormatOptions = new TypeConverterOptions { Formats = new[] { "yyyy-MM-dd HH:mm:ssz" } };
+            csv.Context.TypeConverterOptionsCache.AddOptions<DateTime>(dateFormatOptions);
             csv.WriteRecords(records);
         }
     }

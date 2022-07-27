@@ -3,14 +3,14 @@ namespace CrossCutters;
 
 public record Transaction
 {
-    public Guid TRANSASCTION_ID { get; set; }
+    public Guid TRANSACTION_ID { get; set; }
     public Guid TOKENISED_CUSTOMER_ID { get; set; }
     public DateTime TRANSCATION_DATE { get; set; }
-    public TimeOnly TRANSACTION_TIME {get; set;}
+    //public TimeOnly TRANSACTION_TIME {get; set;}
     public string TRANSACTION_NARRATIVE { get; set; }
-    public decimal TRANSCATION_BILLING_AMOUNT { get; set; }
+    public decimal TRANSACTION_BILLING_AMOUNT { get; set; }
     public string TRANSACTION_BILLING_CURRENCY_CODE { get; set; }
-    public double TRANSACTION_AMOUNT { get; set; }
+    public decimal TRANSACTION_AMOUNT { get; set; }
     public string TRANSACTION_CURRENCY_CODE { get; set; }
     public string PROCESS_CODE { get; set; }
     /// <summary>
@@ -27,6 +27,6 @@ public record Transaction
 
     // public override string ToString()
     // {
-    //     return $"Transaction: {TransactionId} for MCC: {MCC} with Transaction Amount: {TransactionAmount}";
+    //     return $"CustID: {TOKENISED_CUSTOMER_ID}, Currency {TRANSACTION_BILLING_CURRENCY_CODE}, Date {TRANSCATION_DATE}";
     // }
 }

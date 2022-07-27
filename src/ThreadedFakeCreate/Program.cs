@@ -12,9 +12,9 @@ public class Program
     private static int _totalCount = 0;
     static void Main(string[] args)
     {
-        int iterationCount = 50000;
+        int iterationCount = 25000;
         int counter = 1;
-        int maxFileCount = 15;
+        int maxFileCount = 10;
         var stopwatch = new Stopwatch();
 
         //TODO here create the customers! - needs a re-work!!!
@@ -69,12 +69,12 @@ public class Program
     static void ScheduleRecurringJob(int recordCount, DateOnly date, IEnumerable<Customer> customers, IEnumerable<MID> mids)
     {
         //Console.WriteLine($"ScheduleRecurringJob");
-        int split = 25;
+        int split = 10;
         int count = recordCount / split;
         //Dont know if I like this tbh!!
         //This is used to chunk across writing a single daily file!
         //each then runs across the 4 part thread pool
-        for(int x = 0; x < 10; ++x)
+        for(int x = 0; x < 20; ++x)
         {
             //Clear the _record list back down after every pass to save memory!
             _records = new List<Transaction>();
@@ -114,7 +114,8 @@ public class Program
     /// <param name="litems"></param>
     static void tryUpdatePrimaryList(List<Transaction> litems)
     {
-        try{ 
+        try{
+            //Console.WriteLine($"record {litems[0].ToString()}");
             _records.AddRange(litems); 
         }
         catch
