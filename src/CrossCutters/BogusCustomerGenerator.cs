@@ -10,14 +10,14 @@ public static class BogusCustomerGenerator
     /// </summary>
     /// <param name="count">count of list items to be returned</param>
     /// <returns></returns>
-    public static List<Customer> Generate()
+    public static List<Customer> Generate(int count = 500000)
     {
-        Random rand = new Random();
+        Console.WriteLine($"Generating {count} Customers");
+        //Random rand = new Random();
         var testTrans = new Faker<Customer>()
             //Use a method outside scope.
             .RuleFor(t => t.ExternalCustomerId, f => Guid.NewGuid())
             .RuleFor(t => t.CustomerId, f => Guid.NewGuid());
-
-        return testTrans.Generate(10000);
+        return testTrans.Generate(count);
     }
 }

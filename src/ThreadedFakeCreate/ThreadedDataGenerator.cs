@@ -8,7 +8,7 @@ public class ThreadedDataGenerator
     private ManualResetEvent _doneEvent;
     private readonly int _count;
     public readonly int _threadNumber;
-    private int splitCount = 10;
+    //private int splitCount = 10;
     private List<Customer> _customers {get;set;}
     public ThreadedDataGenerator(int count, int threadNumber, IEnumerable<Customer> customers, ManualResetEvent doneEvent)
     {

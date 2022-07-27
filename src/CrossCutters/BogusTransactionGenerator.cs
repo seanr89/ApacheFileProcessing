@@ -21,7 +21,6 @@ public static class BogusTransactionGenerator
             .RuleFor(t => t.MerchantId, f => f.Random.Number(1,2999))
             .RuleFor(t => t.TransactionAmount, f => f.Finance.Amount(1, 150, 2))
             .RuleFor(t => t.TaxRate, f => f.Finance.Amount(0, 15, 0));
-
         return testTrans.Generate(count);
     }
 }
