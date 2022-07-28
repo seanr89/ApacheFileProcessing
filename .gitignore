@@ -5,6 +5,8 @@
 src/FakeFileCreate/Output/
 src/ThreadedFakeCreate/Output/
 src/ThreadedFakeCreate/AppFiles/
+src/TransactThreader/AppFiles/
+src/TransactThreader/Output/
 
 # User-specific files
 *.rsuser

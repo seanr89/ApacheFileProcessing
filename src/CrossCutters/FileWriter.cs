@@ -29,7 +29,6 @@ public static class FileWriter
 
     public static void DeleteFiles()
     {
-        //TODO
         Console.WriteLine("Deleting Files");
         var path = System.Runtime.InteropServices.RuntimeInformation
                                                .IsOSPlatform(OSPlatform.Windows) ? windowsFolderPath: macFolderPath;
@@ -49,7 +48,7 @@ public static class FileWriter
         try
         {
             string path = getFilePath(date);
-            Console.WriteLine($"WriteNewFile: {path}");
+            //Console.WriteLine($"WriteNewFile: {path}");
             using (var streamWriter = new StreamWriter(path))
             {
                 var csvConfig = new CsvConfiguration(CultureInfo.InvariantCulture) { HasHeaderRecord = true, Delimiter = "|" };

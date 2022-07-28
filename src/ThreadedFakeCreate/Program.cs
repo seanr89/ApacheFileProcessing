@@ -14,7 +14,7 @@ public class Program
     {
         int iterationCount = 25000;
         int counter = 1;
-        int maxFileCount = 10;
+        int maxFileCount = 25;
         var stopwatch = new Stopwatch();
 
         //TODO here create the customers! - needs a re-work!!!
@@ -31,25 +31,24 @@ public class Program
         var startDate = DateTime.Now.AddDays(-dayCountBack);
         Console.WriteLine($"Date: {startDate.ToShortDateString()}");
 
-        //Environment.Exit(0);
-        //15,30
+        if(Confirm("Is this date correct") == false)
+            Environment.Exit(0);
         
-
-        //TODO: ask question to wipe the files down
+        //Check if users wants to wipe down?
         if(Confirm("Do you want to wipe down the existing files"))
             FileWriter.DeleteFiles();
 
         stopwatch.Start();
 
         //Looping here to handle multiple date ranges!
-        Console.Write($"{maxFileCount} files to generate!/n");
+        Console.WriteLine($"{maxFileCount} files to generate!");
         do{
             _totalCount = 0;
             var date = DateOnly.FromDateTime(startDate.AddDays(-counter));
             // Console.WriteLine($"Faker Start to create: {iterationCount} records for date: {date.ToShortDateString()}");
             Console.WriteLine($"Faker Start to create records for date: {date.ToShortDateString()}");
             ScheduleRecurringJob(iterationCount, date, customers, mids);
-            Console.WriteLine($"File Done at: {stopwatch.ElapsedMilliseconds}ms");
+            //Console.WriteLine($"File Done at: {stopwatch.ElapsedMilliseconds}ms");
             counter++;
         }
         while (counter <= maxFileCount); //Simple re-loop process

@@ -21,6 +21,6 @@ public static class BogusCustomerGenerator
             .RuleFor(t => t.Gender, _genders.ElementAt(rand.Next(0, _genders.Count())))
             .RuleFor(t => t.YoB, f => f.Random.Number(1900,2022));
 
-        return testTrans.Generate(10000);
+        return testTrans.Generate(500000);
     }
 }

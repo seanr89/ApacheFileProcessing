@@ -25,7 +25,7 @@ public static class BogusTransactionGenerator
             .RuleFor(t => t.TOKENISED_CUSTOMER_ID, f => customers.ElementAt(rand.Next(0, customers.Count())).CustomerId)
             .RuleFor(t => t.TRANSCATION_DATE, f => f.Date.Past())
             //TIMEONLY
-            .RuleFor(t => t.TRANSACTION_NARRATIVE, f => f.Lorem.Text())
+            .RuleFor(t => t.TRANSACTION_NARRATIVE, f => f.Lorem.Slug(5))
             .RuleFor(t => t.TRANSACTION_BILLING_AMOUNT, f => f.Finance.Amount(1, 150, 2))
             .RuleFor(t => t.TRANSACTION_BILLING_CURRENCY_CODE, f => f.Country().CountryInfo().CurrencyName)
             .RuleFor(t => t.TRANSACTION_AMOUNT, f => f.Finance.Amount(1, 150, 2))
