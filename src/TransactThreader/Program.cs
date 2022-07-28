@@ -23,11 +23,11 @@ public class Program
         Console.WriteLine("Please enter the number of to navigate back");
         dateStart = Convert.ToInt32(Console.ReadLine());
 
-        //TODO here create the customers! - needs a re-work!!!
+        //Go Get Customers
         List<Customer> customers = CustomerGetter.TryGetCustomersOrGenerate().ToList();
         Console.WriteLine($"Using {customers.Count} customers");
 
-        //Maybe create some MID's too!
+        //Go Get Mids
         List<MID> mids = MIDGetter.TryGetMIDsOrGenerate().ToList();
         Console.WriteLine($"Using {mids.Count} MIDs");
 
