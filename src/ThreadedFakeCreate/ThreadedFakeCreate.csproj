@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="../CrossCutters/CrossCutters.csproj" />
+    <ProjectReference Include="../Utils/Utils.csproj" />
   </ItemGroup>
 
 

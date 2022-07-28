@@ -25,6 +25,7 @@ public class ThreadedDataGenerator
     public void CustomEvent()
     {
         this.Execute();
+        _doneEvent.Set();
     }
 
     /// <summary>

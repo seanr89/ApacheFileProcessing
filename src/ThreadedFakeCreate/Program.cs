@@ -3,6 +3,7 @@ using System.Globalization;
 using CrossCutters;
 using CsvHelper;
 using CsvHelper.Configuration;
+using Utils;
 
 namespace ThreadedFakeCreate;
 
@@ -31,11 +32,11 @@ public class Program
         var startDate = DateTime.Now.AddDays(-dayCountBack);
         Console.WriteLine($"Date: {startDate.ToShortDateString()}");
 
-        if(Confirm("Is this date correct") == false)
+        if(ConsoleMethods.Confirm("Is this date correct") == false)
             Environment.Exit(0);
         
         //Check if users wants to wipe down?
-        if(Confirm("Do you want to wipe down the existing files"))
+        if(ConsoleMethods.Confirm("Do you want to wipe down the existing files"))
             FileWriter.DeleteFiles();
 
         stopwatch.Start();
@@ -121,25 +122,5 @@ public class Program
         {
             Console.WriteLine("An exception was caught adding to list");
         }
-    }
-
-    /// <summary>
-    /// Provides a Yes/No selection on console apps
-    /// </summary>
-    /// <param name="title">The text to display on the read message</param>
-    /// <returns></returns>
-    public static bool Confirm(string title)
-    {
-        ConsoleKey response;
-        do
-        {
-            Console.Write($"{ title } [y/n] ");
-            response = Console.ReadKey(false).Key;
-            if (response != ConsoleKey.Enter)
-            {
-                Console.WriteLine();
-            }
-        } while (response != ConsoleKey.Y && response != ConsoleKey.N);
-        return (response == ConsoleKey.Y);
     }
 }

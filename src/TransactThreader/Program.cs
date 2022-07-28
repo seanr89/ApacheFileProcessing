@@ -50,30 +50,30 @@ public class Program
     {
         Console.WriteLine($"RunTheadPool {loopCount}");
         var doneEvents = new ManualResetEvent[loopCount];
-        Thread.Sleep(2500);
-        //var threadArray = new ThreadedDataGenerator[split];
+        var threadArray = new ThreadFileHandler[loopCount];
 
         for (int i = 0; i < loopCount; ++i)
         {
-        //     //set the done event, initialise the processor and work!
+            //set the done event, initialise the processor and work!
             doneEvents[i] = new ManualResetEvent(false);
-        //     var f = new ThreadedDataGenerator(count, i, customers, doneEvents[i]);
-        //     threadArray[i] = f;
-        //     ThreadPool.QueueUserWorkItem(x => {
-        //         f.CustomEvent();
-        //         tryUpdatePrimaryList(f._transactions);
-        //         doneEvents[f._threadNumber].Set();
-        //     }, i);
+            var f = new ThreadFileHandler(i, customers, doneEvents[i]);
+            threadArray[i] = f;
+            ThreadPool.QueueUserWorkItem(x => {
+                f.CustomEvent();
+                //tryUpdatePrimaryList(f._transactions);
+                doneEvents[f._threadNumber].Set();
+                Console.WriteLine($"Thread Complete: {f._threadNumber}");
+            }, i);
         }
         //WaitHandler to block until all the work is done
-        //WaitHandle.WaitAll(doneEvents);
+        WaitHandle.WaitAll(doneEvents);
     }
 
     static void RecursiveProcess(int totalCount, int iteration, int increment, List<Customer> customers)
     {
         Console.WriteLine($"RecursiveProcess");
         var completedCount = iteration * increment;
-        //Console.WriteLine($"RecursiveProcess: completedCount {completedCount}");
+        Console.WriteLine($"RecursiveProcess: completedCount {completedCount}");
         var processCount = increment;
 
         if(completedCount >= totalCount)
