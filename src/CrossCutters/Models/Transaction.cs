@@ -18,12 +18,12 @@ public record Transaction
     /// </summary>
     /// <value></value>
     public int MERCHANT_ID { get; set; }
-    public string LOCATION_COUNTRY { get; set; }
+    public string? LOCATION_COUNTRY { get; set; }
     public int MCC { get; set; }
-    public string CARDHOLDER_PRESENT { get; set; }
-    public string CARD_TYPE_INDICATOR { get; set; }
-    public string CARD_INPUT_MODE { get; set; }
-    public string REVERSAL_INDICATOR { get; set; }
+    public string? CARDHOLDER_PRESENT { get; set; }
+    public string? CARD_TYPE_INDICATOR { get; set; }
+    public string? CARD_INPUT_MODE { get; set; }
+    public string? REVERSAL_INDICATOR { get; set; }
 
     // public override string ToString()
     // {

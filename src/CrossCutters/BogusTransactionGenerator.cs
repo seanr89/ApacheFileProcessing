@@ -15,7 +15,7 @@ public static class BogusTransactionGenerator
     /// </summary>
     /// <param name="count">count of list items to be returned</param>
     /// <returns></returns>
-    public static List<Transaction> GenerateTransactions(int count, List<Customer> customers)
+    public static List<Transaction> GenerateTransactions(int count, IEnumerable<Customer> customers)
     {
         Random rand = new Random();
         CountryDataSet data = new();
