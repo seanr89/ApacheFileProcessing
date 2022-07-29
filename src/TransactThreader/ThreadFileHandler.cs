@@ -7,7 +7,6 @@ namespace TransactThreader;
 /// </summary>
 public class ThreadFileHandler
 {
-    //public List<Transaction> _transactions { get; set; }
     private ManualResetEvent _doneEvent;
     public readonly int _threadNumber;
     private IEnumerable<Customer> _customers {get;set;}
@@ -18,7 +17,6 @@ public class ThreadFileHandler
     public ThreadFileHandler(int threadNumber, IEnumerable<Customer> customers, ManualResetEvent doneEvent)
     {
         _customers = customers;
-        //_transactions = new List<Transaction>();
         this._threadNumber = threadNumber;
         this._doneEvent = doneEvent;
     }
@@ -27,7 +25,6 @@ public class ThreadFileHandler
     {
         Console.WriteLine($"Execute Running Date {date.ToShortDateString()}");
         this.Execute(count, date);
-        //this.WriteTransactionsToFile(date);
         _doneEvent.Set();
         return;
     }
@@ -38,18 +35,13 @@ public class ThreadFileHandler
     /// </summary>
     private void Execute(int count, DateOnly date)
     {
+        //TODO: this process needs to get quicker!!!
         List<Transaction> transactions;
         for(int i = 0; i < 100; i++)
         {
             transactions = new List<Transaction>();
             transactions.AddRange(BogusTransactionGenerator.GenerateTransactions((count / 100), _customers));
-            WriteTransactionsToFile(transactions, date);
+            FileWriter.WriteFakeTransactionToFile(transactions, date);
         }
-    }
-
-    void WriteTransactionsToFile(List<Transaction> transactions, DateOnly date)
-    {
-        //Console.WriteLine($"Writing {transactions.Count()} records to file");
-        FileWriter.WriteFakeTransactionToFile(transactions, date);
     }
 }

@@ -54,7 +54,7 @@ public static class FileWriter
                 var csvConfig = new CsvConfiguration(CultureInfo.InvariantCulture) { HasHeaderRecord = true, Delimiter = "|" };
                 using (var csvWriter = new CsvWriter(streamWriter, csvConfig))
                 {
-                    var dateFormatOptions = new TypeConverterOptions { Formats = new[] { "yyyy-MM-dd HH:mm:ssz" } };
+                    var dateFormatOptions = new TypeConverterOptions { Formats = new[] { "yyyy-MM-dd" } };
                     csvWriter.Context.TypeConverterOptionsCache.AddOptions<DateTime>(dateFormatOptions);
                     csvWriter.WriteRecords(records);
                     streamWriter.Flush();
@@ -75,12 +75,12 @@ public static class FileWriter
     static void AppendToFile(List<Transaction> records, DateOnly date)
     {
         //Console.WriteLine("AppendToFile");
-        var config = new CsvConfiguration(CultureInfo.InvariantCulture) { HasHeaderRecord = true, Delimiter = "|" };
+        var config = new CsvConfiguration(CultureInfo.InvariantCulture) { HasHeaderRecord = false, Delimiter = "|" };
         using (var stream = File.Open(getFilePath(date), FileMode.Append))
         using (var writer = new StreamWriter(stream))
         using (var csv = new CsvWriter(writer, config))
         {
-            var dateFormatOptions = new TypeConverterOptions { Formats = new[] { "yyyy-MM-dd HH:mm:ssz" } };
+            var dateFormatOptions = new TypeConverterOptions { Formats = new[] { "yyyy-MM-dd" } };
             csv.Context.TypeConverterOptionsCache.AddOptions<DateTime>(dateFormatOptions);
             csv.WriteRecords(records);
         }

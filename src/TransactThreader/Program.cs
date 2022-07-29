@@ -8,8 +8,9 @@ public class Program
 {
     static void Main(string[] args)
     {
-        // See https://aka.ms/new-console-template for more information
-        Console.WriteLine("Hello App!");
+        Console.WriteLine("Transaction Generator");
+
+        //TODO: denote all the selections!
 
         int fileCount = 0;
         Console.WriteLine("Please enter the number of files to create:");
@@ -20,7 +21,7 @@ public class Program
         fileSize = Convert.ToInt32(Console.ReadLine());
 
         int dateStart = 0;
-        Console.WriteLine("Please enter count of days to start back from");
+        Console.WriteLine("Please enter count of days to skip:");
         dateStart = Convert.ToInt32(Console.ReadLine());
         var date = DateTime.Now.AddDays(-dateStart);
 
@@ -38,14 +39,16 @@ public class Program
 
         var stop = new Stopwatch();
         stop.Start();
-        RecursiveProcess(fileCount, 0, 5, customers, date, fileSize);
+
+        RecursiveProcess(fileCount, 0, 12, customers, date, fileSize);
         stop.Stop();
+
         Console.WriteLine($"Event completed it : {stop.ElapsedMilliseconds}ms");
         Console.WriteLine("App Complete");
     }
 
     /// <summary>
-    /// 
+    /// Process to execute a series of threads!
     /// </summary>
     /// <param name="loopCount"></param>
     /// <param name="customers"></param>
@@ -64,7 +67,6 @@ public class Program
             var runDate = DateOnly.FromDateTime(date.AddDays(-i));
             ThreadPool.QueueUserWorkItem(x => {
                 f.CustomEvent(fileSize, runDate);
-                //tryUpdatePrimaryList(f._transactions);
                 doneEvents[f._threadNumber].Set();
                 //Console.WriteLine($"Thread Complete: {f._threadNumber}");
             }, i);
@@ -73,9 +75,18 @@ public class Program
         WaitHandle.WaitAll(doneEvents);
     }
 
-    static void RecursiveProcess(int totalCount, int iteration, int increment, List<Customer> customers, DateTime date, int fileSize)
+    /// <summary>
+    /// TODO comment
+    /// </summary>
+    /// <param name="totalCount"></param>
+    /// <param name="iteration"></param>
+    /// <param name="increment"></param>
+    /// <param name="customers"></param>
+    /// <param name="date"></param>
+    /// <param name="fileSize"></param>
+    static void RecursiveProcess(int totalCount, int iteration, int increment,
+        List<Customer> customers, DateTime date, int fileSize)
     {
-        Console.WriteLine($"RecursiveProcess");
         var completedCount = iteration * increment;
         Console.WriteLine($"RecursiveProcess: completedCount {completedCount}");
         var processCount = increment;
@@ -83,20 +94,19 @@ public class Program
         if(completedCount >= totalCount)
             return;
 
-        //TODO: figure out total and remaining!
+        //figure out total files remaining
         if((totalCount - completedCount) < increment)
             processCount = totalCount - completedCount;
-        
         //Console.WriteLine($"RecursiveProcess: processCount {processCount}");
 
         RunThreadPool(processCount, customers, date, fileSize);
 
-        //Increment the iteration
+        //Increment the iteration for next process
         iteration++;
-
         date = date.AddDays(-((iteration + 1) * processCount));
         Console.WriteLine($"RecursiveProcess: Next date: {date.ToShortDateString()}");
 
+        //Recursively re-run job!
         RecursiveProcess(totalCount, iteration, increment, customers, date, fileSize);
         return;
     }
