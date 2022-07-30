@@ -69,7 +69,7 @@ public static class FileWriter
     }
 
     /// <summary>
-    /// 
+    /// Supports updating a file over writing a new file!
     /// </summary>
     /// <param name="records"></param>
     static void AppendToFile(List<Transaction> records, DateOnly date)

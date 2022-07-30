@@ -11,11 +11,11 @@ public class Program
         Console.WriteLine("Transaction Generator");
 
         //TODO: denote all the selections!
-
+        // How many files to generate!
         int fileCount = 0;
         Console.WriteLine("Please enter the number of files to create:");
         fileCount = Convert.ToInt32(Console.ReadLine());
-
+        // How many records per file!
         int fileSize = 50000;
         Console.WriteLine("Please enter the number of records to add to a single file:");
         fileSize = Convert.ToInt32(Console.ReadLine());
@@ -29,9 +29,12 @@ public class Program
         if(ConsoleMethods.Confirm("Do you want to wipe down the existing files"))
             FileWriter.DeleteFiles();
 
+        Console.WriteLine("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+        Console.WriteLine("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+
         //Go Get Customers
         List<Customer> customers = CustomerGetter.TryGetCustomersOrGenerate().ToList();
-        //Console.WriteLine($"Using {customers.Count} customers");
+        Console.WriteLine($"Using {customers.Count} customers");
 
         //Go Get Mids
         //List<MID> mids = MIDGetter.TryGetMIDsOrGenerate().ToList();
@@ -76,7 +79,7 @@ public class Program
     }
 
     /// <summary>
-    /// TODO comment
+    /// Supports the recursive running of the thread pool job
     /// </summary>
     /// <param name="totalCount"></param>
     /// <param name="iteration"></param>
