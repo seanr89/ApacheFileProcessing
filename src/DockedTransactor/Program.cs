@@ -20,7 +20,7 @@ public class Program
         while (max == 100 || counter < max)
         {
             Console.WriteLine($"Counter: {++counter}");
-            await Task.Delay(1000);
+            await Task.Delay(250);
         }
     }
 }
